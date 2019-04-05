@@ -15,7 +15,7 @@ module.exports = {
         ch.assertQueue(calculationQueue, { durable: false })
         console.log('waiting for messages')
         ch.consume(calculationQueue, function (msg) {
-          console.log(' [x] Received %s', msg.content.toString())
+          console.log(`claim received for calculation - ${msg.content.toString()}`)
         }, { noAck: true })
       })
     })
