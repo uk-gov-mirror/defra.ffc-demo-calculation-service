@@ -21,4 +21,6 @@ lab.experiment('API test', () => {
     Code.expect(response.statusCode).to.equal(200)
     Code.expect(response.result).to.equal({ hello: 'world' })
   })
+
+  // TODO add test for each gross and net calculation
 })
