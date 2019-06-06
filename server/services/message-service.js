@@ -1,9 +1,11 @@
 const amqp = require('amqplib/callback_api')
 const calculationService = require('./calculation-service')
+const config = require('../config')
 
 module.exports = {
   receiveClaim: function () {
-    amqp.connect('amqp://localhost', function (err, conn) {
+    const messageQueue = config.messageQueue
+    amqp.connect(messageQueue, function (err, conn) {
       if (err) {
         console.log(err)
       }
