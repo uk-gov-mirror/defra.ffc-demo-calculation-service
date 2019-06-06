@@ -1,0 +1,8 @@
+version: '3'
+services:
+  mine-support-claim-service:
+    build: .
+    image: mine-support-calculation-service
+    container_name: mine-support-calculation-service
+    ports:
+        - "3005:3005"
