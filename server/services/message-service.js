@@ -8,22 +8,23 @@ module.exports = {
     amqp.connect(messageQueue, function (err, conn) {
       if (err) {
         console.log(err)
+      } else {
+        conn.createChannel(function (err, ch) {
+          if (err) {
+            console.log(err)
+          } else {
+            const calculationQueue = 'calculation'
+            ch.assertQueue(calculationQueue, { durable: false })
+            console.log('waiting for messages')
+            ch.consume(calculationQueue, function (msg) {
+              console.log(`claim received for calculation - ${msg.content.toString()}`)
+              const claim = JSON.parse(msg.content)
+              const value = calculationService.calculate(claim)
+              publishCalculation({ claimId: claim.claimId, value: value })
+            }, { noAck: true })
+          }
+        })
       }
-      conn.createChannel(function (err, ch) {
-        if (err) {
-          console.log(err)
-        }
-
-        const calculationQueue = 'calculation'
-        ch.assertQueue(calculationQueue, { durable: false })
-        console.log('waiting for messages')
-        ch.consume(calculationQueue, function (msg) {
-          console.log(`claim received for calculation - ${msg.content.toString()}`)
-          const claim = JSON.parse(msg.content)
-          const value = calculationService.calculate(claim)
-          publishCalculation({ claimId: claim.claimId, value: value })
-        }, { noAck: true })
-      })
     })
   }
 }
