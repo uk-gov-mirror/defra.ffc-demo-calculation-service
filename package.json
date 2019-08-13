@@ -8,8 +8,8 @@
     "start-watch": "nodemon index.js",
     "lint": "standard",
     "pretest": "npm run lint",
-    "test": "jest",
-    "test-watch": "jest --watch"
+    "test": "jest --forceExit",
+    "test-watch": "jest --watch --forceExit"
   },
   "author": "",
   "license": "ISC",
