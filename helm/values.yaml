@@ -15,7 +15,15 @@ containers:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     restartPolicy: Always   
-    messageQueue: amqp://mine-support-message-service
+    messageQueueHost: amq
+    messageQueuePort: 5672
+    messageQueueTransport: tcp
+    calculationQueueAddress: calculation
+    calculatonQueueUser: artemis
+    calculationQueuePassword: artemis
+    paymentQueueAddress: payment
+    paymentQueueUser: artemis
+    paymentQueuePassword: artemis
 replicas: 1
 minReadySeconds: 10
 maxSurge: 1

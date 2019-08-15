@@ -20,10 +20,24 @@ spec:
         env:                
         - name: NODE_ENV
           value: {{ .Values.environment }}
-        - name: MESSAGE_QUEUE
-          value: {{ .Values.containers.service.messageQueue }}
-        ports:
-        - containerPort: {{ .Values.containers.service.port }}
+        - name: MESSAGE_QUEUE_HOST
+          value: {{ .Values.containers.service.messageQueueHost }}
+        - name: MESSAGE_QUEUE_PORT
+          value: {{ .Values.containers.service.messageQueuePort }}
+        - name: MESSAGE_QUEUE_TRANSPORT
+          value: {{ .Values.containers.service.messageQueueTransport }}
+        - name: CALCULATION_QUEUE_ADDRESS
+          value: {{ .Values.containers.service.calculationQueueAddress }}
+        - name: CALCULATION_QUEUE_USER
+          value: {{ .Values.containers.service.calculationQueueUser }}
+        - name: CALCULATION_QUEUE_PASSWORD
+          value: {{ .Values.containers.service.calculationQueuePassword }}
+        - name: PAYMENT_QUEUE_ADDRESS
+          value: {{ .Values.containers.service.paymentQueueAddress }}
+        - name: PAYMENT_QUEUE_USER
+          value: {{ .Values.containers.service.paymentQueueUser }}
+        - name: PAYMENT_QUEUE_PASSWORD
+          value: {{ .Values.containers.service.paymentQueuePassword }}
         resources:
           requests:
             memory: {{ .Values.containers.service.requestMemory | quote }}
