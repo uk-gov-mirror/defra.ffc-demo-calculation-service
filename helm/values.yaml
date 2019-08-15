@@ -2,7 +2,6 @@ environment: development
 containers:
   service:
     name: mine-support-calculation-service
-    port: 3005
     registry:
     image: mine-support-calculation-service
     tag: latest
