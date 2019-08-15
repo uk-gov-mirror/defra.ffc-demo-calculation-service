@@ -52,9 +52,6 @@ steps:
     echo '##vso[task.setvariable variable=mergedPrNo]'$mergedPrNo
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], format('refs/heads/{0}', variables['Build.SourceBranchName'])))
   displayName: extracts merged PR number if merge to branch
-  # install Docker on build machine for integration tests
-- task: DockerInstaller@0
-  displayName: 'Install Docker 17.09.0-ce'
   # create test folder
 - script: |
     mkdir test-output
@@ -69,7 +66,7 @@ steps:
     dockerComposeFile: docker-compose.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
-    dockerComposeCommand: -f docker-compose.test.yaml build --no-cache $(imageName)
+    dockerComposeCommand: -f docker-compose.test.yaml -f docker-compose.pipeline.yaml build --no-cache $(imageName)
   displayName: build tests image
   # run tests
 - task: DockerCompose@0
