@@ -2,4 +2,4 @@ version: '3.4'
 services:
   mine-support-calculation-service:
     environment: 
-      MESSAGE_QUEUE_HOST : "localhost"
+     MESSAGE_QUEUE_HOST : "localhost"
