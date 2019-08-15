@@ -19,7 +19,7 @@ containers:
     messageQueuePort: "5672"
     messageQueueTransport: tcp
     calculationQueueAddress: calculation
-    calculatonQueueUser: artemis
+    calculationQueueUser: artemis
     calculationQueuePassword: artemis
     paymentQueueAddress: payment
     paymentQueueUser: artemis
