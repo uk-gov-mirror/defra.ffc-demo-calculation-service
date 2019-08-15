@@ -16,7 +16,7 @@ containers:
     allowPrivilegeEscalation: false
     restartPolicy: Always   
     messageQueueHost: amq
-    messageQueuePort: 5672
+    messageQueuePort: "5672"
     messageQueueTransport: tcp
     calculationQueueAddress: calculation
     calculatonQueueUser: artemis

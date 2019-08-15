@@ -23,7 +23,7 @@ spec:
         - name: MESSAGE_QUEUE_HOST
           value: {{ .Values.containers.service.messageQueueHost }}
         - name: MESSAGE_QUEUE_PORT
-          value: {{ .Values.containers.service.messageQueuePort }}
+          value: {{ .Values.containers.service.messageQueuePort | quote}}
         - name: MESSAGE_QUEUE_TRANSPORT
           value: {{ .Values.containers.service.messageQueueTransport }}
         - name: CALCULATION_QUEUE_ADDRESS
