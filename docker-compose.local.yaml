@@ -8,6 +8,8 @@ services:
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
+    environment: 
+      MESSAGE_QUEUE_HOST : "host.docker.internal"
 
   amq:
     networks:
