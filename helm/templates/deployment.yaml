@@ -1,17 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  labels:
-    app.component: {{ .Values.name }}
   name: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy: {}
   template:
-    metadata:
-      labels:
-        app.component: {{ .Values.name }}
     spec:
       containers:   
       - name: {{ .Values.name }}
