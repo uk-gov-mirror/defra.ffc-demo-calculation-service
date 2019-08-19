@@ -11,7 +11,7 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  restartPolicy: Always   
+  restartPolicy: Always
   messageQueueHost: amq
   messageQueuePort: "5672"
   messageQueueTransport: tcp
