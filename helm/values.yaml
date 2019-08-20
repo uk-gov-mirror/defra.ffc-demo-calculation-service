@@ -12,6 +12,7 @@ container:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   restartPolicy: Always
+  redeployOnChange: update this field to force a change
   messageQueueHost: amq
   messageQueuePort: "5672"
   messageQueueTransport: tcp

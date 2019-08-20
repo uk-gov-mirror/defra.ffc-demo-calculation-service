@@ -7,13 +7,15 @@ metadata:
 spec:
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
-  strategy: {}
   template:
     metadata:
       labels:
         app: {{ .Values.name }}
         environment: {{ .Values.environment }}
+      annotations:
+        redeployOnChange: {{ .Values.container.redeployOnChange }}
     spec:
+      restartPolicy: {{ .Values.container.restartPolicy }}
       containers:   
       - name: {{ .Values.name }}
         image: {{ .Values.image }}
@@ -27,6 +29,12 @@ spec:
             {{- toYaml . | nindent 12 }}
         {{- end }}
         {{- end }}
+        imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+        securityContext:
+          runAsUser: {{ .Values.container.runAsUser }}
+          runAsNonRoot: {{ .Values.container.runAsNonRoot }}
+          readOnlyRootFilesystem: {{ .Values.container.readOnlyRootFilesystem }}
+          allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
         env:                
         - name: NODE_ENV
           value: {{ .Values.environment }}
@@ -55,6 +63,3 @@ spec:
           limits:
             memory: {{ .Values.container.limitMemory | quote }}
             cpu: {{ .Values.container.limitCpu | quote }}   
-        volumes:                      
-      restartPolicy: {{ .Values.container.restartPolicy }}
-status: {}
