@@ -5,7 +5,7 @@ metadata:
     app: {{ .Values.name }}
     environment: {{ .Values.environment }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.replicaCount }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   template:
     metadata:

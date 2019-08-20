@@ -22,7 +22,7 @@ container:
   paymentQueueAddress: payment
   paymentQueueUser: artemis
   paymentQueuePassword: artemis
-replicas: 1
+replicaCount: 1
 minReadySeconds: 10
 maxSurge: 1
 maxUnavailable: 1
