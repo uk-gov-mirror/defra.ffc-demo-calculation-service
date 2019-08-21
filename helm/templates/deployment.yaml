@@ -1,6 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: {{ .Values.name }}
   labels:
     app: {{ .Values.name }}
     environment: {{ .Values.environment }}
