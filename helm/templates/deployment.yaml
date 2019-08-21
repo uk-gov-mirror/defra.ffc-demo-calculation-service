@@ -5,8 +5,8 @@ metadata:
     app: {{ .Values.name }}
     environment: {{ .Values.environment }}
 spec:
-  replicas: {{ .Values.replicaCount }}
-  minReadySeconds: {{ .Values.minReadySeconds }}
+  replicas: {{ .Values.replicaCount | quote }}
+  minReadySeconds: {{ .Values.minReadySeconds | quote }}
   template:
     metadata:
       labels:
@@ -31,7 +31,7 @@ spec:
         {{- end }}
         imagePullPolicy: {{ .Values.container.imagePullPolicy }}
         securityContext:
-          runAsUser: {{ .Values.container.runAsUser }}
+          runAsUser: {{ .Values.container.runAsUser | quote }}
           runAsNonRoot: {{ .Values.container.runAsNonRoot }}
           readOnlyRootFilesystem: {{ .Values.container.readOnlyRootFilesystem }}
           allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
