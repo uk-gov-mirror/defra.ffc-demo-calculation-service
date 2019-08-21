@@ -14,7 +14,7 @@ container:
   restartPolicy: Always
   redeployOnChange: update this field to force a change
   messageQueueHost: amq
-  messageQueuePort: "5672"
+  messageQueuePort: 5672
   messageQueueTransport: tcp
   calculationQueueAddress: calculation
   calculationQueueUser: artemis
