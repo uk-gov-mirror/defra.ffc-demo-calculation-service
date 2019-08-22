@@ -1,4 +1,4 @@
-[![Build status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/defra-ff-mine-support-calculation-service)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=564)
+[![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support-calculation-service?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=612&branchName=master)
 
 # Mine Support Calculation Service
 Digital service mock to claim public money in the event property subsides into mine shaft.  The calculation service subscribes to a message queue for new claims and calculates a value for each claim.  Once calculated it publishes the value to a message queue.
@@ -67,3 +67,13 @@ Local tests can be run with the command:
   "mineType": ["gold"],
   "email": "test@email.com"
 }
+
+The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
+- Runs unit tests
+- Publishes test result
+- Pushes containers to the registry tagged with the PR number or release version
+- Deletes PR deployments, containers, and namepace upon merge
+
+Builds will be deployed into a namespace with the format `mine-support-calculation-service-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
+
+A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
