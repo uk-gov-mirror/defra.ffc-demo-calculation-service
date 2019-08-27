@@ -1,21 +1,23 @@
 version: '3.4'
+
+# This override file should be used in development environments to
+# connect this service to sibling services from other repositories
+
 services:
   mine-support-calculation-service:
-    command:  ./wait-for amq:8161 -- npm run start-watch
+    command: >
+      sh -c "
+        scripts/wait-for/wait-for mine-support-message-queue:5672 --
+        npm run start:watch"
     networks:
       - mine-support
-      - mine-support-amq
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
 
-  amq:
-    networks:
-     - mine-support-amq
-
 networks:
   mine-support:
-   external: true
-  mine-support-amq: {}
+    external: true
+
 volumes:
-  node_modules:
+  node_modules: {}

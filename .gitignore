@@ -40,7 +40,9 @@ jspm_packages/
 typings/
 
 # Optional npm cache directory
-.npm
+.config/
+.npm/
+.standard-v12-cache/
 
 # Optional eslint cache
 .eslintcache
