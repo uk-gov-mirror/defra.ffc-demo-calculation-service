@@ -1,4 +1,4 @@
-[![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support-calculation-service?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=612&branchName=master)
+[![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/defra-ffc-demo-calculation-service?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=612&branchName=master)
 
 # FFC Demo Calculation Service
 
@@ -34,6 +34,7 @@ The following environment variables are required by the application container. V
  | PAYMENT_QUEUE_ADDRESS      | payment queue name          | no       |             | payment                             |       |
  | PAYMENT_QUEUE_USER         | payment queue user name     | no       |             |                                     |       |
  | PAYMENT_QUEUE_PASSWORD     | payment queue password      | no       |             |                                     |       |
+ | HEALTHZ_FILE_INTERVAL_IN_MILLIS | Interval for creation of healthz file | no       | 10000            |                                     | Maximum value 30000  |
 
 # How to run tests
 
@@ -129,6 +130,11 @@ The [start](./scripts/start) script runs [ActiveMQ Artemis](https://activemq.apa
 
 Test messages can be sent via the Artemis console UI hosted at http://localhost:8161/console/login (username: artemis, password: artemis). Messages should match the format of the sample JSON below.
 
+### Probes
+
+The service has a command based liveness probe.  The probe will write a file containing a timestamp to the `/tmp` directory.  If the timestamp has not been updated in the last 30 seconds, the probe will report the service is not functioning.
+
+# Sample valid JSON
 __Sample calculation queue message__
 
 ```

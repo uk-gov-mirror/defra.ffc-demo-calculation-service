@@ -68,3 +68,18 @@ spec:
           limits:
             memory: {{ .Values.container.limitMemory }}
             cpu: {{ .Values.container.limitCpu }}   
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - /usr/src/app/scripts/healthz
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        volumeMounts:
+        - mountPath: /tmp
+          name: health-dir
+      volumes:
+      - name: health-dir
+        emptyDir: {}
