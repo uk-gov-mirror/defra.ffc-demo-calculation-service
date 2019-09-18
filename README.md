@@ -1,4 +1,5 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/defra-ffc-demo-calculation-service?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=612&branchName=master)
+[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-demo-calculation-service/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-demo-calculation-service?targetFile=package.json)
 
 # FFC Demo Calculation Service
 
@@ -34,7 +35,7 @@ The following environment variables are required by the application container. V
  | PAYMENT_QUEUE_ADDRESS      | payment queue name          | no       |             | payment                             |       |
  | PAYMENT_QUEUE_USER         | payment queue user name     | no       |             |                                     |       |
  | PAYMENT_QUEUE_PASSWORD     | payment queue password      | no       |             |                                     |       |
- | HEALTHZ_FILE_INTERVAL_IN_MILLIS | Interval for creation of healthz file | no       | 10000            |                                     | Maximum value 30000  |
+ | HEALTHZ_FILE_INTERVAL_IN_MILLIS | Interval for creation of healthz file | no | 10000 |                                  | Maximum value 30000  |
 
 # How to run tests
 
