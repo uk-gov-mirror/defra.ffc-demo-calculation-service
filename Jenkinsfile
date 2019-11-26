@@ -10,21 +10,9 @@ def repoName = 'ffc-demo-calculation-service'
 def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
-def extraCommands = ''
-
-def getExtraHelmCommands() {
-  withCredentials([
-      string(credentialsId: 'messageQueueHostPR', variable: 'messageQueueHost'),
-      usernamePassword(credentialsId: 'calculationListenPR', usernameVariable: 'calculationQueueUsername', passwordVariable: 'calculationQueuePassword'),
-      usernamePassword(credentialsId: 'paymentSendPR', usernameVariable: 'paymentQueueUsername', passwordVariable: 'paymentQueuePassword')
-    ]) {
-    return "--values ./helm/ffc-demo-calculation-service/jenkins-aws.yaml --set container.messageQueueHost=\"$messageQueueHost\",container.paymentQueueUser=\"$paymentQueueUsername\",container.paymentQueuePassword=\"$paymentQueuePassword\",container.calculationQueueUser=\"$calculationQueueUsername\",container.calculationQueuePassword=\"$calculationQueuePassword\""
-  }  
-}
 
 node {
   checkout scm
-  extraCommands = getExtraHelmCommands()
   try {
     stage('Set branch, PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
@@ -53,7 +41,27 @@ node {
       }
     } else {
       stage('Helm install') {
-        defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
+        withCredentials([
+          string(credentialsId: 'messageQueueHostPR', variable: 'messageQueueHost'),
+          usernamePassword(credentialsId: 'calculationListenPR', usernameVariable: 'calculationQueueUsername', passwordVariable: 'calculationQueuePassword'),
+          usernamePassword(credentialsId: 'paymentSendPR', usernameVariable: 'paymentQueueUsername', passwordVariable: 'paymentQueuePassword')
+        ]) {
+          def helmValues = [
+            /container.calculationQueuePassword="$calculationQueuePassword"/,
+            /container.calculationQueueUser="$calculationQueueUsername"/,
+            /container.messageQueueHost="$messageQueueHost"/,
+            /container.paymentQueuePassword="$paymentQueuePassword"/,
+            /container.paymentQueueUser="$paymentQueueUsername"/,
+            /container.redeployOnChange="$pr-$BUILD_NUMBER"/
+          ].join(',')
+
+          def extraCommands = [
+            "--values ./helm/ffc-demo-calculation-service/jenkins-aws.yaml",
+            "--set $helmValues"
+          ].join(' ')
+
+          defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
+        }
       }
     }
     if (mergedPrNo != '') {
@@ -67,4 +75,3 @@ node {
     throw e
   }
 }
-
