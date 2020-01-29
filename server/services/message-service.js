@@ -1,14 +1,22 @@
-const MessageSender = require('./messaging/message-sender')
-const MessageReceiver = require('./messaging/message-receiver')
-const messageAction = require('./message-action')
+const { messageAction } = require('./message-action')
+const MessageConsumer = require('./messaging/message-consumer')
+const createQueue = require('./messaging/create-queue')
 const config = require('../config')
+let consumer
 
-const messageSender = new MessageSender('payment-queue-sender', config.paymentQueueConfig)
-const messageReceiver = new MessageReceiver('calculation-queue-receiver', config.calculationQueueConfig)
+async function registerService () {
+  if (config.calculationQueueConfig.createQueue) {
+    await createQueue(config.calculationQueueConfig.name, config.calculationQueueConfig)
+  }
+  if (config.paymentQueueConfig.createQueue) {
+    await createQueue(config.paymentQueueConfig.name, config.paymentQueueConfig)
+  }
+  registerCalculationConsumer()
+}
 
-async function registerQueues () {
-  await openConnections()
-  await messageReceiver.setupReceiver((message) => messageAction(message, messageSender))
+function registerCalculationConsumer () {
+  consumer = new MessageConsumer(config.calculationQueueConfig, config.calculationQueueConfig.queueUrl, messageAction)
+  consumer.start()
 }
 
 process.on('SIGTERM', async function () {
@@ -22,16 +30,10 @@ process.on('SIGINT', async function () {
 })
 
 async function closeConnections () {
-  await messageSender.closeConnection()
-  await messageReceiver.closeConnection()
-}
-
-async function openConnections () {
-  await messageSender.openConnection()
-  await messageReceiver.openConnection()
+  consumer.stop()
 }
 
 module.exports = {
-  registerQueues,
+  registerService,
   closeConnections
 }

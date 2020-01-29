@@ -63,16 +63,25 @@ node {
     } else {
       stage('Helm install') {
         withCredentials([
-          string(credentialsId: 'messageQueueHostPR', variable: 'messageQueueHost'),
-          usernamePassword(credentialsId: 'calculationListenPR', usernameVariable: 'calculationQueueUsername', passwordVariable: 'calculationQueuePassword'),
-          usernamePassword(credentialsId: 'paymentSendPR', usernameVariable: 'paymentQueueUsername', passwordVariable: 'paymentQueuePassword')
+          string(credentialsId: 'sqsQueueEndpoint', variable: 'sqsQueueEndpoint'),
+          string(credentialsId: 'calculationQueueUrlPR', variable: 'calculationQueueUrl'),
+          string(credentialsId: 'calculationQueueAccessKeyIdListen', variable: 'calculationQueueAccessKeyId'),
+          string(credentialsId: 'calculationQueueSecretAccessKeyListen', variable: 'calculationQueueSecretAccessKey'),
+          string(credentialsId: 'paymentQueueUrlPR', variable: 'paymentQueueUrl'),
+          string(credentialsId: 'paymentQueueAccessKeyIdSend', variable: 'paymentQueueAccessKeyId'),
+          string(credentialsId: 'paymentQueueSecretAccessKeySend', variable: 'paymentQueueSecretAccessKey')
         ]) {
           def helmValues = [
-            /container.calculationQueuePassword="$calculationQueuePassword"/,
-            /container.calculationQueueUser="$calculationQueueUsername"/,
-            /container.messageQueueHost="$messageQueueHost"/,
-            /container.paymentQueuePassword="$paymentQueuePassword"/,
-            /container.paymentQueueUser="$paymentQueueUsername"/,
+            /container.calculationQueueEndpoint="$sqsQueueEndpoint"/,
+            /container.calculationQueueUrl="$calculationQueueUrl"/,
+            /container.calculationQueueAccessKeyId="$calculationQueueAccessKeyId"/,
+            /container.calculationQueueSecretAccessKey="$calculationQueueSecretAccessKey"/,
+            /container.calculationCreateQueue="false"/,
+            /container.paymentQueueEndpoint="$sqsQueueEndPoint"/,
+            /container.paymentQueueUrl="$paymentQueueUrl"/,
+            /container.paymentQueueAccessKeyId="$paymentQueueAccessKeyId"/,
+            /container.paymentQueueSecretAccessKey="$paymentQueueSecretAccessKey"/,
+            /container.paymentCreateQueue="false"/,
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/
           ].join(',')
 
