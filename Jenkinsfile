@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.16')
+@Library('defra-library@1.0.0')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -12,7 +12,7 @@ def mergedPrNo = ''
 def containerTag = ''
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def containerSrcFolder = '\\/usr\\/src\\/app'
+def containerSrcFolder = '\\/home\\/node'
 def localSrcFolder = '.'
 def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
@@ -33,7 +33,7 @@ node {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(imageName, BUILD_NUMBER)
+      defraUtils.runTests(imageName, imageName, BUILD_NUMBER)
     }
      stage('Create Test Report JUnit'){
       defraUtils.createTestReportJUnit()
@@ -119,6 +119,6 @@ node {
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(imageName)
+    defraUtils.deleteTestOutput(imageName, containerSrcFolder)
   }
 }
