@@ -2,19 +2,15 @@
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
-def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
-def regCredsId = 'ecr:eu-west-2:ecr-user'
-def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
-def imageName = 'ffc-demo-calculation-service'
-def repoName = 'ffc-demo-calculation-service'
-def pr = ''
-def mergedPrNo = ''
+def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
+def lcovFile = './test-output/lcov.info'
+def localSrcFolder = '.'
+def mergedPrNo = ''
+def pr = ''
+def serviceName = 'ffc-demo-calculation-service'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def containerSrcFolder = '\\/home\\/node'
-def localSrcFolder = '.'
-def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
 node {
@@ -24,16 +20,16 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Set branch, PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
-      defraUtils.lintHelm(imageName)
+      defraUtils.lintHelm(serviceName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(imageName, BUILD_NUMBER)
+      defraUtils.buildTestImage(serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(imageName, imageName, BUILD_NUMBER)
+      defraUtils.runTests(serviceName, serviceName, BUILD_NUMBER)
     }
      stage('Create Test Report JUnit'){
       defraUtils.createTestReportJUnit()
@@ -42,31 +38,31 @@ node {
       defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
-      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
+      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
+      defraUtils.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
     }
     if (pr == '') {
       stage('Publish chart') {
-        defraUtils.publishChart(registry, imageName, containerTag)
+        defraUtils.publishChart(DOCKER_REGISTRY, serviceName, containerTag)
       }
       stage('Trigger GitHub release') {
         withCredentials([
-          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken') 
+          string(credentialsId: 'github-auth-token', variable: 'gitToken') 
         ]) {
-          defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
+          defraUtils.triggerRelease(containerTag, serviceName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
         withCredentials([
-          string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
-          string(credentialsId: 'ffc-demo-calculation-service-deploy-token', variable: 'jenkinsToken')
+          string(credentialsId: 'calculation-service-deploy-token', variable: 'jenkinsToken'),
+          string(credentialsId: 'calculation-service-job-deploy-name', variable: 'deployJobName')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, 'ffc-demo-calculation-service-deploy', jenkinsToken, ['chartVersion':containerTag])
+          defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion':containerTag])
         }
       }
     } else {
@@ -75,13 +71,13 @@ node {
       }
       stage('Helm install') {
         withCredentials([
-          string(credentialsId: 'sqsQueueEndpoint', variable: 'sqsQueueEndpoint'),
-          string(credentialsId: 'calculationQueueUrlPR', variable: 'calculationQueueUrl'),
-          string(credentialsId: 'calculationQueueAccessKeyIdListen', variable: 'calculationQueueAccessKeyId'),
-          string(credentialsId: 'calculationQueueSecretAccessKeyListen', variable: 'calculationQueueSecretAccessKey'),
-          string(credentialsId: 'paymentQueueUrlPR', variable: 'paymentQueueUrl'),
-          string(credentialsId: 'paymentQueueAccessKeyIdSend', variable: 'paymentQueueAccessKeyId'),
-          string(credentialsId: 'paymentQueueSecretAccessKeySend', variable: 'paymentQueueSecretAccessKey')
+          string(credentialsId: 'sqs-queue-endpoint', variable: 'sqsQueueEndpoint'),
+          string(credentialsId: 'calculation-queue-url-pr', variable: 'calculationQueueUrl'),
+          string(credentialsId: 'calculation-queue-access-key-id-listen', variable: 'calculationQueueAccessKeyId'),
+          string(credentialsId: 'calculation-queue-secret-access-key-listen', variable: 'calculationQueueSecretAccessKey'),
+          string(credentialsId: 'payment-queue-url-pr', variable: 'paymentQueueUrl'),
+          string(credentialsId: 'payment-queue-access-key-id-send', variable: 'paymentQueueAccessKeyId'),
+          string(credentialsId: 'payment-queue-secret-access-key-send', variable: 'paymentQueueSecretAccessKey')
         ]) {
           def helmValues = [
             /container.calculationQueueEndpoint="$sqsQueueEndpoint"/,
@@ -102,13 +98,13 @@ node {
             "--set $helmValues"
           ].join(' ')
 
-          defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
+          defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
         }
       }
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployChart(kubeCredsId, imageName, mergedPrNo)
+        defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
     }
     stage('Set GitHub status as success'){
@@ -119,6 +115,6 @@ node {
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(imageName, containerSrcFolder)
+    defraUtils.deleteTestOutput(serviceName, containerSrcFolder)
   }
 }
