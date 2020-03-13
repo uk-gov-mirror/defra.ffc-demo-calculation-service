@@ -90,7 +90,8 @@ node {
             /container.paymentQueueAccessKeyId="$paymentQueueAccessKeyId"/,
             /container.paymentQueueSecretAccessKey="$paymentQueueSecretAccessKey"/,
             /container.paymentCreateQueue="false"/,
-            /container.redeployOnChange="$pr-$BUILD_NUMBER"/
+            /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
+            /labels.version="$containerTag"/
           ].join(',')
 
           def extraCommands = [

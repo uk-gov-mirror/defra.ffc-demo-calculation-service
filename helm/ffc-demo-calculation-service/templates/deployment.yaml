@@ -1,19 +1,15 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ quote .Values.name }}
-  labels:
-    app: {{ quote .Values.name }}
-    environment: {{ quote .Values.environment }}
+  name: {{ quote .Values.name }}  
+  labels: {{ include "ffc-demo.labels" . | trimSuffix "\n" | indent 2 }}
   namespace: {{ quote .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   template:
     metadata:
-      labels:
-        app: {{ quote .Values.name }}
-        environment: {{ quote .Values.environment }}
+      labels: {{ include "ffc-demo.labels" . | trimSuffix "\n" | indent 6 }}
       annotations:
         redeployOnChange: {{ quote .Values.container.redeployOnChange }}
     spec:

@@ -3,6 +3,10 @@ name: ffc-demo-calculation-service
 namespace: ffc-demo
 image: ffc-demo-calculation-service
 imagePullSecret:
+labels:
+  instance:
+  version: 1.0.0
+  component: service
 container:
   priorityClassName: low
   imagePullPolicy: IfNotPresent
