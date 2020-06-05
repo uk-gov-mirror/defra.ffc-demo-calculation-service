@@ -1,26 +1,4 @@
 {{- define "ffc-demo-calculation-service.container" -}}
-name: {{ quote .Values.name }}
-env:
-- name: NODE_ENV
-  value: {{ quote .Values.environment }}
-- name: MESSAGE_QUEUE_HOST
-  value: {{ quote .Values.container.messageQueueHost }}
-- name: MESSAGE_QUEUE_PORT
-  value: {{ quote .Values.container.messageQueuePort }}
-- name: MESSAGE_QUEUE_TRANSPORT
-  value: {{ quote .Values.container.messageQueueTransport }}
-- name: CALCULATION_QUEUE_ADDRESS
-  value: {{ quote .Values.container.calculationQueueAddress }}
-- name: CALCULATION_QUEUE_USER
-  value: {{ quote .Values.container.calculationQueueUser }}
-- name: CALCULATION_QUEUE_PASSWORD
-  value: {{ quote .Values.container.calculationQueuePassword }}
-- name: PAYMENT_QUEUE_ADDRESS
-  value: {{ quote .Values.container.paymentQueueAddress }}
-- name: PAYMENT_QUEUE_USER
-  value: {{ quote .Values.container.paymentQueueUser }}
-- name: PAYMENT_QUEUE_PASSWORD
-  value: {{ quote .Values.container.paymentQueuePassword }}
 livenessProbe: {{ include "ffc-helm-library.exec-probe" (list . .Values.livenessProbe) | nindent 4}}
 volumeMounts:
 - mountPath: /tmp
