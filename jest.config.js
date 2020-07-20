@@ -20,7 +20,7 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      statements: 83
+      statements: 50
     }
   },
   modulePathIgnorePatterns: [
@@ -40,5 +40,8 @@ module.exports = {
   ],
   resetModules: true,
   restoreMocks: true,
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  testPathIgnorePatterns: [
+    'test/integration/local'
+  ]
 }
