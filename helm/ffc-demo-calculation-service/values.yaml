@@ -9,6 +9,10 @@ labels: {}
 appInsights:
   key:
 
+azureIdentity:
+  clientID: not-a-real-clientID
+  resourceID: not-a-real-resourceID
+
 containerConfigMap:
   name: ffc-demo-calculation-service-config-map
 
@@ -36,11 +40,7 @@ container:
   allowPrivilegeEscalation: false
   messageQueueHost: amq
   calculationQueueAddress: calculation
-  calculationQueuePassword: artemis
-  calculationQueueUser: artemis
   paymentQueueAddress: payment
-  paymentQueuePassword: artemis
-  paymentQueueUser: artemis
 
 livenessProbe:
   initialDelaySeconds: 70
