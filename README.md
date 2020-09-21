@@ -37,7 +37,6 @@ and
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
 | MESSAGE_QUEUE_HOST                 | Azure Service Bus hostname, e.g. `myservicebus.servicebus.windows.net`                       |
 | MESSAGE_QUEUE_PASSWORD             | Azure Service Bus SAS policy key                                                             |
-| MESSAGE_QUEUE_SUFFIX               | Developer specific queue suffix to prevent collisions, only required for local development   |
 | MESSAGE_QUEUE_USER                 | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey`                          |
 
 ## Environment variables
@@ -77,6 +76,14 @@ Alternatively, the same tests may be run locally via npm:
 # Run tests without Docker
 npm run test
 ```
+
+Running the integration tests locally requires access to ASB, this can be
+achieved by setting the following environment variables:
+
+`MESSAGE_QUEUE_HOST`, `MESSAGE_QUEUE_PASSWORD`, `MESSAGE_QUEUE_USER` & `CALCULATION_QUEUE_ADDRESS`
+must be set to valid, developer specific queues that are available on ASB, e.g.
+for the payment queue that would be `ffc-demo-calculation-<initials>` where
+`<initials>` are the initials of the developer.
 
 ## Running the application
 

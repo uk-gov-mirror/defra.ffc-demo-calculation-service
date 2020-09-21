@@ -40,8 +40,6 @@ module.exports = {
   ],
   resetModules: true,
   restoreMocks: true,
-  testEnvironment: 'node',
-  testPathIgnorePatterns: [
-    'test/integration/local'
-  ]
+  setupFilesAfterEnv: ['./jest.setup.js'],
+  testEnvironment: 'node'
 }
