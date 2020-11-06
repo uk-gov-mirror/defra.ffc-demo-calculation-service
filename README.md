@@ -138,8 +138,7 @@ An example message:
   "claimId": "MINE123",
   "propertyType": "business",
   "accessible": false,
-  "dateOfSubsidence": "2019-07-26T09:54:19.622Z",
-  "email": "test@email.com"
+  "dateOfSubsidence": "2019-07-26T09:54:19.622Z"
 }
 ```
 
@@ -151,26 +150,6 @@ shared dependencies such as message queues. The most convenient approach for
 this is to start the entire application stack from the
 [`ffc-demo-development`](https://github.com/DEFRA/ffc-demo-development)
 repository.
-
-It is also possible to run a limited subset of the application stack, using the
-[`start`](./scripts/start) script's `--link` flag to join each service to the
-shared Docker network. See the
-`ffc-demo-development`
-[README](https://github.com/DEFRA/ffc-demo-development#ffc-demo-development)
-for instructions.
-
-### Deploy to Kubernetes
-
-For production deployments, a helm chart is included in the `.\helm` folder.
-
-```
-# Deploy to current Kubernetes context
-scripts/helm/install
-
-# Remove from current Kubernetes context
-scripts/helm/delete
-```
-
 
 The service has a command based liveness probe.  The probe will write a file
 containing a timestamp to the `/tmp` directory.  If the timestamp has not been
