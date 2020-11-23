@@ -6,19 +6,14 @@ Digital service mock to claim public money in the event property subsides into m
 
 ## Prerequisites
 
-Access to an instance of an
+- Access to an instance of an
 [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/)(ASB).
-And either:
 - Docker
 - Docker Compose
 
-Or:
+Optional:
 - Kubernetes
 - Helm
-
-Or:
-- Node 10+
-- Redis
 
 ### Azure Service Bus
 
