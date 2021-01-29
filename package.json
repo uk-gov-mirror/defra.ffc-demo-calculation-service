@@ -1,7 +1,7 @@
 {
   "name": "ffc-demo-calculation-service",
   "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
-  "version": "4.0.3",
+  "version": "4.1.0",
   "main": "app/index.js",
   "scripts": {
     "pretest": "npm run test:lint",
@@ -26,13 +26,12 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@azure/ms-rest-nodeauth": "^3.0.5",
-    "@azure/service-bus": "^1.1.8",
     "@hapi/joi": "^17.1.1",
     "applicationinsights": "^1.8.0",
-    "ffc-messaging": "^1.0.5"
+    "ffc-messaging": "2.0.0"
   },
   "devDependencies": {
+    "@azure/service-bus": "^7.0.2",
     "jest": "^26.1.0",
     "jest-junit": "^11.1.0",
     "nodemon": "^2.0.4",
