@@ -24,6 +24,10 @@ deployment:
   restartPolicy: Always
   priorityClassName: low
   replicas: 1
+  minReplicas: 1
+  maxReplicas: 3
+  cpuThreshold: 80
+  memoryThreshold: 80
   minReadySeconds: 5
   redeployOnChange: update this field to force a change
   imagePullSecret:
@@ -32,8 +36,8 @@ deployment:
 
 container:
   imagePullPolicy: IfNotPresent
-  requestMemory: 30Mi
-  requestCpu: 10m
+  requestMemory: 60Mi
+  requestCpu: 40m
   limitMemory: 60Mi
   limitCpu: 40m
   readOnlyRootFilesystem: true
