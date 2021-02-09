@@ -8,11 +8,13 @@ const mqSchema = joi.object({
     appInsights: joi.object()
   },
   calculationQueue: {
+    name: joi.string().default('ffc-demo-calculation-service-calculation'),
     address: joi.string().default('calculation'),
     username: joi.string(),
     password: joi.string()
   },
   paymentTopic: {
+    name: joi.string().default('ffc-demo-calculation-service-payment'),
     address: joi.string().default('payment'),
     username: joi.string(),
     password: joi.string(),
@@ -28,11 +30,13 @@ const mqConfig = {
     appInsights: process.env.NODE_ENV === 'production' ? require('applicationinsights') : undefined
   },
   calculationQueue: {
+    name: process.env.CALCULATION_QUEUE_NAME,
     address: process.env.CALCULATION_QUEUE_ADDRESS,
     password: process.env.MESSAGE_QUEUE_PASSWORD,
     username: process.env.MESSAGE_QUEUE_USER
   },
   paymentTopic: {
+    name: process.env.PAYMENT_TOPIC_NAME,
     address: process.env.PAYMENT_TOPIC_ADDRESS,
     password: process.env.MESSAGE_QUEUE_PASSWORD,
     username: process.env.MESSAGE_QUEUE_USER,
