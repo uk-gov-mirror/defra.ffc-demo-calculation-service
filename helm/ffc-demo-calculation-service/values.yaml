@@ -30,17 +30,13 @@ deployment:
   memoryThreshold: 80
   minReadySeconds: 5
   imagePullSecret:
-  runAsNonRoot: true
-  runAsUser: 1000
 
 container:
   imagePullPolicy: IfNotPresent
-  requestMemory: 60Mi
-  requestCpu: 40m
+  requestMemory: 5Mi
+  requestCpu: 5m
   limitMemory: 60Mi
   limitCpu: 40m
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
   messageQueueHost: amq
   calculationQueueAddress: calculation
   paymentTopicAddress: payment
