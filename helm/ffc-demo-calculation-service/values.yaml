@@ -13,16 +13,10 @@ deployment:
   minReadySeconds: 5
 
 container:
-  memCpuTier: M
+  memCpuTier: L
 
 livenessProbe:
   initialDelaySeconds: 70
   periodSeconds: 10
   failureThreshold: 3
   script: /home/node/scripts/healthz
-
-aadWorkloadIdentity: true
-
-serviceAccount:
-  name: ffc-demo
-  roleArn: true
