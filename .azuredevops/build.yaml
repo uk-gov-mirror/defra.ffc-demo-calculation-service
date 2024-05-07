@@ -36,7 +36,7 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      ref: main
+      ref: aa/353142-postdeploymenttrigger-job-test
 
 extends:
   template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
