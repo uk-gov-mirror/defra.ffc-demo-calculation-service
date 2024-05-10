@@ -42,7 +42,7 @@ extends:
   template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
     programmeName: "ffc"
-    # includePlatformEnvs: true
+    includePlatformEnvs: true
     serviceName: "ffc-demo-calculation-service"
     deployFromFeature: ${{ parameters.deployFromFeature }}
     deployConfigOnly: ${{ parameters.deployConfigOnly }}
