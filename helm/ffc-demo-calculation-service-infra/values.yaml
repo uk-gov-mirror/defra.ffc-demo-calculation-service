@@ -2,6 +2,7 @@ namespaceTopics:
   - name: payment   
     roleAssignments:
       - roleName: 'TopicSender'
+  - name: testtopic    
 
 namespaceQueues:
   - name: calculation
