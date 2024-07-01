@@ -1,0 +1,14 @@
+apiVersion: authorization.azure.com/v1api20200801preview
+kind: RoleAssignment
+metadata:
+  name: debug-aso-rg-rbac
+  namespace: flux-config
+spec:
+  owner:
+    name: sndadpinfrg3401-ffc-demo
+    group: resources.azure.com
+    kind: ResourceGroup
+  principalId: 399a6819-86d4-463a-ab88-d65aaed39166
+  principalType: "Group"
+  roleDefinitionReference:
+    armId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c # Contributor

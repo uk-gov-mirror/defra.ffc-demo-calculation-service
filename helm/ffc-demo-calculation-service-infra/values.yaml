@@ -2,7 +2,8 @@ namespaceTopics:
   - name: payment   
     roleAssignments:
       - roleName: 'TopicSender'
-
+  - name: debugtopic   
+ 
 namespaceQueues:
   - name: calculation
     owner: 'no'

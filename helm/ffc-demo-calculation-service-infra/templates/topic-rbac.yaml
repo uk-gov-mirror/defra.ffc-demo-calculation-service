@@ -1,0 +1,12 @@
+apiVersion: authorization.azure.com/v1api20200801preview
+kind: RoleAssignment
+metadata:
+  name: debug-aso-topic01-rbac
+  namespace: flux-config
+spec:
+  owner:
+    armId: /subscriptions/22ff5465-17ba-4833-85b0-e47c13a82be8/resourceGroups/sndadpinfrg3401/providers/Microsoft.ServiceBus/namespaces/sndadpinfsb3401/topics/debugtopic
+  principalId: 399a6819-86d4-463a-ab88-d65aaed39166
+  principalType: "Group"
+  roleDefinitionReference:
+    armId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/69a216fc-b8fb-44d8-bc22-1f3c2cd27a39
