@@ -1,0 +1,56 @@
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: ffc-demo-calculation-service-monitoring-metrics-publisher
+  labels:
+    azure.workload.identity/use: "true"
+spec:
+  template:
+    metadata:
+      labels:
+        azure.workload.identity/use: "true"
+    spec:
+      containers:
+        serviceAccountName: ffc-demo-calculation-service
+        restartPolicy: Never
+        volumes:
+      - name: custom-root-ca
+        secret:
+          secretName: custom-ca-trust-secret
+          optional: true
+      containers:
+      - name: ffc-demo-calculation-service-monitoring-metrics-publisher
+        image: ssvadpinfcr3401.azurecr.io/image/powershell-executor:491667 # {"$imagepolicy": "flux-config:powershell-executor-snd-03"}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 250Mi
+          limits:
+            cpu: 500m
+            memory: 600Mi
+        volumeMounts:
+        - name: custom-root-ca
+          readOnly: true
+          mountPath: /etc/ssl/certs/defra-egress-firewall-cert-01.crt
+          subPath: defra-egress-firewall-cert-01.crt
+        env:
+        - name: GIT_REPO_URL
+          value: https://github.com/DEFRA/adp-flux-services.git
+        - name: GIT_BRANCH
+          value: jk/add-mi-to-group-generic
+        - name: SCRIPT_FILE_NAME
+          value: common/scripts/access-control/aad/Add-ManagedIdToADGroup.ps1
+        - name: MI_NAME
+          value: 
+        - name: SSV_SHARED_SUBSCRIPTION_ID
+          value: ${SSV_SHARED_SUBSCRIPTION_ID}
+        - name: AD_GROUP
+          value: AAG-Azure-ADP-eutd-trade-exports-core-snd3-PostgresDB_Writer
+        - name: SP_CLIENT_ID_KV
+          value: ${SSV_SPN_CLIENT_ID_KV_NAME}
+        - name: SP_CLIENT_SECRET_KV
+          value: ${SSV_SPN_CLIENT_SECRET_KV_NAME}
+        - name: KEY_VAULT_NAME
+          value: ${SSV_PLATFORM_KEYVAULT}        
+  backoffLimit: 2
