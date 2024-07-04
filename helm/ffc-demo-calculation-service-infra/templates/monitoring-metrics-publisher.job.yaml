@@ -4,6 +4,10 @@ metadata:
   name: ffc-demo-calculation-service-monitoring-metrics-publisher
   labels:
     azure.workload.identity/use: "true"
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   template:
     metadata:
@@ -20,7 +24,7 @@ spec:
           optional: true
       containers:
       - name: ffc-demo-calculation-service-monitoring-metrics-publisher
-        image: ssvadpinfcr3401.azurecr.io/image/powershell-executor:491667 # {"$imagepolicy": "flux-config:powershell-executor-snd-03"}
+        image: ssvadpinfcr3401.azurecr.io/image/powershell-executor:491667
         imagePullPolicy: Always
         resources:
           requests:
@@ -42,11 +46,11 @@ spec:
         - name: SCRIPT_FILE_NAME
           value: common/scripts/access-control/aad/Add-ManagedIdToADGroup.ps1
         - name: MI_NAME
-          value: 
+          value: ${TEAM_MI_PREFIX}-${SERVICE_NAME}
         - name: SSV_SHARED_SUBSCRIPTION_ID
           value: ${SSV_SHARED_SUBSCRIPTION_ID}
         - name: AD_GROUP
-          value: AAG-Azure-ADP-eutd-trade-exports-core-snd3-PostgresDB_Writer
+          value: AAG-Azure-ADP-SND1-AppInsight_Monitoring-Metrics-Reader
         - name: SP_CLIENT_ID_KV
           value: ${SSV_SPN_CLIENT_ID_KV_NAME}
         - name: SP_CLIENT_SECRET_KV
