@@ -36,7 +36,7 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      ref: refs/tags/1.0.0-latest
+      ref: gg/305099-team-group-perms #refs/tags/1.0.0-latest
 
 extends:
   template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
@@ -45,6 +45,7 @@ extends:
     serviceName: "ffc-demo-calculation-service"
     deployFromFeature: ${{ parameters.deployFromFeature }}
     deployConfigOnly: ${{ parameters.deployConfigOnly }}
+    includePlatformEnvs: true
     appBuildConfig:
       appFrameworkType: "nodejs"  
       projectPath: "./package.json"
