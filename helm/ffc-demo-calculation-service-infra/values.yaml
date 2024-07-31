@@ -8,3 +8,12 @@ namespaceQueues:
     owner: 'no'
     roleAssignments:
       - roleName: 'QueueReceiver'
+
+storageAccounts:
+  - name: 'ggtest'
+    roleAssignments:
+      - roleName: 'DataWriter'
+    blobContainers:
+      - name: 'ggdoc'        
+    tables: 
+      - name: 'ggdocmetadata'
